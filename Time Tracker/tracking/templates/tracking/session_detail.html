@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Work Session</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Work Session</h1>
+    <button id="end-session">End Session</button>
+    <div id="screenshots"></div>
+
+    <script>
+        let sessionId = "{{ session.id }}";
+        let active = true;
+        let timer;
+
+        function startTimer() {
+            timer = setInterval(() => {
+                if (active) {
+                    fetch(`/tracking/take_screenshot/${sessionId}/`);
+                }
+            }, 180000); // Take screenshot every 3 minutes
+        }
+
+        $(document).ready(function() {
+            startTimer();
+            $('#end-session').click(function() {
+                window.location.href = `/tracking/end/${sessionId}/`;
+            });
+        });
+    </script>
+</body>
+</html>
